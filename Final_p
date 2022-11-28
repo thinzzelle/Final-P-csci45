@@ -1,0 +1,94 @@
+import turtle
+import random
+import time
+
+window = turtle.Screen()
+window.title("Stack Game")
+window.bgcolor("black")
+window.setup(width=500, height=650)
+window.tracer(0)  # stops window from updating allowing game to fun faster.
+# block_color = ("red", "orange", "yellow", "green", "blue", "violet")
+
+# set up gif
+random_b = random.random()
+
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+
+# starting block/ base block
+block_s = turtle.Turtle()
+block_s.speed(0)
+block_s.color("yellow")
+block_s.shape("square")
+block_s.shapesize(stretch_wid=1, stretch_len=3)
+block_s.penup()
+block_s.goto(0, -300)
+
+# next block in line
+while True:
+     block_n = turtle.Turtle()
+     block_n.speed(0)
+     block_n.color("red")
+     block_n.shape("square")
+     block_n.shapesize(stretch_wid=1, stretch_len=1)
+     block_n.penup()
+     block_n.goto(random_b, 350)
+     block_n.dy = 0.3
+# block_n.dx = 0.7
+# defines ===================================
+def game_start():
+    global game_state
+    game_state = "play"
+
+def block_L():
+    x = block_s.xcor()
+    x -= 10
+    block_s.setx(x)
+def block_R():
+    x = block_s.xcor()
+    x += 10
+    block_s.setx(x)
+#  def block_stop():
+#    x = block_n.xcor()
+#    block_n.setx(x)
+
+# key input ==================================
+window.listen()
+window.onkeypress(game_start, "s")
+window.onkeypress(block_L, "a")
+window.onkeypress(block_R, "d")
+# =====================================
+game_state = "splash"
+# Main game loop =================================
+while True:
+    pen.clear()
+
+    if game_state == "splash":
+        window.bgpic("Meteor Storm.gif")
+    elif game_state == "play":
+        window.bgpic("black.gif")
+# Next block movements
+        block_n.sety(block_n.ycor() + block_n.dy)
+    # block_n.setx(block_n.xcor() + block_n.dx)
+# Border checks
+
+    # if block_n.xcor() > 250:
+    #     block_n.setx(250)
+    #     block_n.dx *= -1
+    # if block_n.xcor() < -250:
+    #     block_n.setx(-250)
+    #     block_n.dx *= -1
+
+    if block_n.ycor() > 350:
+        block_n.sety(350)
+        block_n.dy *= -1
+    if block_n.ycor() < -320:
+        block_n.sety(-320)
+        # block_n.dy *= -1
+
+    window.update()
