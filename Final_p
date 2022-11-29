@@ -1,17 +1,34 @@
 import turtle
 import random
+import winsound
 import time
+
+score = 0
+
+
+def game_start():
+    global game_state
+    game_state = "play"
+
 
 window = turtle.Screen()
 window.title("Stack Game")
 window.bgcolor("black")
 window.setup(width=500, height=650)
 window.tracer(0)  # stops window from updating allowing game to fun faster.
-# block_color = ("red", "orange", "yellow", "green", "blue", "violet")
 
-# set up gif
-random_b = random.random()
+window.register_shape("heart.gif")  # set up gif
+window.register_shape("heart2.gif")
+window.register_shape("heart3.gif")
+window.register_shape("heart4.gif")
 
+window.register_shape("mine.gif")
+window.register_shape("mine2.gif")
+
+window.register_shape("start1.gif")
+window.register_shape("start2.gif")
+
+random_b = random.randint(-240, 240)
 
 pen = turtle.Turtle()
 pen.speed(0)
@@ -20,7 +37,11 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 
-# starting block/ base block
+window.listen()
+window.onkeypress(game_start, "s")
+
+game_state = "splash"
+# starting block/ Player block =================
 block_s = turtle.Turtle()
 block_s.speed(0)
 block_s.color("yellow")
@@ -29,66 +50,174 @@ block_s.shapesize(stretch_wid=1, stretch_len=3)
 block_s.penup()
 block_s.goto(0, -300)
 
-# next block in line
-while True:
-     block_n = turtle.Turtle()
-     block_n.speed(0)
-     block_n.color("red")
-     block_n.shape("square")
-     block_n.shapesize(stretch_wid=1, stretch_len=1)
-     block_n.penup()
-     block_n.goto(random_b, 350)
-     block_n.dy = 0.3
-# block_n.dx = 0.7
+# next block in line ===========================
+block_neg = []
+
+for _ in range(2):
+    block_n = turtle.Turtle()
+    block_n.speed(0)  # speed function
+    block_n.color("red")
+    block_n.shape("mine.gif")
+    block_n.frame = 0
+    block_n.frames = ["mine.gif", "mine2.gif"]
+    block_n.shapesize(stretch_wid=1, stretch_len=1)
+    block_n.penup()
+    block_n.goto(random_b, 350)
+    block_n.speed = random.randint(1, 2)  # speed variable
+    block_neg.append(block_n)
+
+block_po = []
+
+for _ in range(3):
+    block_p = turtle.Turtle()
+    block_p.speed(0)  # speed function
+    block_p.color("pink")
+    block_p.shape("heart.gif")
+    block_p.frame = 0
+    block_p.frames = ["heart.gif", "heart2.gif", "heart3.gif", "heart4.gif"]
+    block_p.shapesize(stretch_wid=1, stretch_len=1)
+    block_p.penup()
+    block_p.goto(random_b, 350)
+    block_p.speed = random.randint(1, 2)  # speed variable
+    block_po.append(block_p)
+
+# start_ = []
+
+# for _ in range(1):
+#     star_ = turtle.Turtle()
+#     star_.color("black")
+#   star_.shape("start1.gif")
+#    star_.frames = ["start1.gif", "start2.gif"]
+#   star_.penup()
+#   start_.append(star_)
+
+
+# def st_ani():
+#    star_.frame += 1
+#    if star_.frame >= len(star_.frames):
+#        star_.frame = 0
+#    star_.shape(star_.frames[star_.frame])
+
+#    window.ontimer(st_ani, 1000)
+
+
+def blockn_animate():
+    block_n.frame += 1
+    if block_n.frame >= len(block_n.frames):
+        block_n.frame = 0
+    block_n.shape(block_n.frames[block_n.frame])
+
+    window.ontimer(blockn_animate, 200)
+
+
+def blockp_animate():
+    block_p.frame += 1
+    if block_p.frame >= len(block_p.frames):
+        block_p.frame = 0
+    block_p.shape(block_p.frames[block_p.frame])
+
+    window.ontimer(blockp_animate, 200)
+
+
+blockp_animate()
+
+blockn_animate()
+
+scoreboard = turtle.Turtle()
+scoreboard.speed(0)
+scoreboard.shape("square")
+scoreboard.color("white")
+scoreboard.penup()
+scoreboard.goto(-170, 280)
+scoreboard.hideturtle()
+font = ("Courier", 24, "normal")
+scoreboard.write("Score: {}".format(score), align="center", font=font)
 # defines ===================================
-def game_start():
-    global game_state
-    game_state = "play"
 
-def block_L():
-    x = block_s.xcor()
-    x -= 10
-    block_s.setx(x)
-def block_R():
-    x = block_s.xcor()
-    x += 10
-    block_s.setx(x)
-#  def block_stop():
-#    x = block_n.xcor()
-#    block_n.setx(x)
 
-# key input ==================================
-window.listen()
-window.onkeypress(game_start, "s")
-window.onkeypress(block_L, "a")
-window.onkeypress(block_R, "d")
-# =====================================
-game_state = "splash"
+def block_l():   # direction left
+
+    x = block_s.xcor()
+    x -= 30
+    if x <= -220:
+        x = -220
+    block_s.setx(x)
+
+
+def block_r():   # direction right
+
+    x = block_s.xcor()
+    x += 30
+    if x >= 220:
+        x = 220
+    block_s.setx(x)
+
+
+# player key input ==================================
+
+window.onkeypress(block_l, "a")  # left
+window.onkeypress(block_r, "d")  # right
+
+
 # Main game loop =================================
+
 while True:
     pen.clear()
 
+    window.update()
+
     if game_state == "splash":
-        window.bgpic("Meteor Storm.gif")
+        window.bgpic("start1.gif")
+
+        #   st_ani()
+        #   window.listen()
+        #   window.onkeypress(game_start, "s")
+
+        # window.bgpic("start1.gif")
+
     elif game_state == "play":
         window.bgpic("black.gif")
-# Next block movements
-        block_n.sety(block_n.ycor() + block_n.dy)
-    # block_n.setx(block_n.xcor() + block_n.dx)
-# Border checks
 
-    # if block_n.xcor() > 250:
-    #     block_n.setx(250)
-    #     block_n.dx *= -1
-    # if block_n.xcor() < -250:
-    #     block_n.setx(-250)
-    #     block_n.dx *= -1
+# Neg block movements ============================
+        for block_n in block_neg:  # a for-each loop
+            y = block_n.ycor()
+            y -= block_n.speed
+            block_n.sety(y)
+            x = block_n.xcor()
+            x -= 1
+            block_n.setx(x)
+            if block_n.xcor() > 240:
+                block_n.setx(239)
+                x *= -1
+            if block_n.xcor() < -240:
+                block_n.setx(-239)
+                x *= -1
+            if block_n.ycor() < -300:  # neg block collision w/ ground
+                x = random.randint(-250, 250)
+                y = random.randint(340, 350)
+                block_n.goto(x, y)
+            if block_n.distance(block_s) < 25:  # neg block collision w/ player block
+                winsound.PlaySound("explosion_x.wav", winsound.SND_FILENAME)
+                game_state = "flop"
+        for block_p in block_po:  # loop for positive blocks
+            y = block_p.ycor()
+            y -= block_p.speed
+            block_p.sety(y)
+            x = block_p.xcor()
+            x -= 1
 
-    if block_n.ycor() > 350:
-        block_n.sety(350)
-        block_n.dy *= -1
-    if block_n.ycor() < -320:
-        block_n.sety(-320)
-        # block_n.dy *= -1
+            if y < -300:  # neg block collision w/ ground
+                x = random.randint(-250, 250)
+                y = random.randint(340, 350)
+                block_p.goto(x, y)
+            if block_p.distance(block_s) < 25:
+                x = random.randint(-250, 250)
+                y = random.randint(340, 350)
+                block_p.goto(x, y)
+                score += 1
+                scoreboard.clear()
+                scoreboard.write("Score: {}".format(score), align="center", font=font)
+                winsound.PlaySound("coin_flip.wav", winsound.SND_ASYNC)
 
-    window.update()
+    elif game_state == "flop":
+        window.bgpic("lose.gif")
