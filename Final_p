@@ -1,10 +1,8 @@
 import turtle
 import random
 import winsound
-import time
 
 score = 0
-
 
 def game_start():
     global game_state
@@ -57,7 +55,6 @@ block_neg = []
 
 for _ in range(2):
     block_n = turtle.Turtle()
-    block_n.speed(0)  # speed function
     block_n.color("red")
     block_n.shape("mine.gif")
     block_n.frame = 0
@@ -72,7 +69,6 @@ block_neg2 = []
 
 for _ in range(2):
     block_n2 = turtle.Turtle()
-    block_n2.speed(0)  # speed function
     block_n2.color("red")
     block_n2.shape("mine3.gif")
     block_n2.frame = 0
@@ -87,7 +83,6 @@ block_po = []
 
 for _ in range(3):
     block_p = turtle.Turtle()
-    block_p.speed(0)  # speed function
     block_p.color("pink")
     block_p.shape("heart.gif")
     block_p.frame = 0
@@ -213,14 +208,6 @@ while True:
             x = block_n2.xcor()
             x += 1
             block_n2.setx(x)
-            # if block_n.xcor() >= 240:
-            #    block_n.setx(240)
-            #    # x *= -1
-            #    block_n.back(90)
-            # if block_n.xcor() < -240:
-            #    block_n.setx(-240)
-            #    # x *= -1
-            #    block_n.back(90)
             if block_n2.ycor() < -300:  # neg block collision w/ ground
                 x = random.randint(-250, -250)
                 y = random.randint(0, 350)
@@ -236,14 +223,6 @@ while True:
             x = block_n.xcor()
             x -= 1
             block_n.setx(x)
-            # if block_n.xcor() >= 240:
-            #    block_n.setx(240)
-            #    # x *= -1
-            #    block_n.back(90)
-            # if block_n.xcor() < -240:
-            #    block_n.setx(-240)
-            #    # x *= -1
-            #    block_n.back(90)
             if block_n.ycor() < -300:  # neg block collision w/ ground
                 x = random.randint(250, 250)
                 y = random.randint(0, 350)
