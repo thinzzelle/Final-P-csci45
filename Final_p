@@ -12,7 +12,7 @@ def game_start():
 
 
 window = turtle.Screen()
-window.title("Stack Game")
+window.title("Meteor Storm")
 window.bgcolor("black")
 window.setup(width=500, height=650)
 window.tracer(0)  # stops window from updating allowing game to fun faster.
